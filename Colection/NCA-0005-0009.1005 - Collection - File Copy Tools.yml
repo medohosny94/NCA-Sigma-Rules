@@ -1,0 +1,18 @@
+title: NCA-0005-0009.1005 - Collection - File Copy Tools
+id: dff1619b-588b-4c77-9699-2722104571c5
+author: NCA
+description: This rule identifies potentially data collection using robocoby and xcopy tools
+status: experimental
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4688
+    CommandLine|contains:
+      - 'robocopy'
+      - 'xcopy'
+  condition: selection
+falsepositives:
+  - "Unknown"
+level: medium

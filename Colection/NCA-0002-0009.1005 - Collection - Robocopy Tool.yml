@@ -1,0 +1,19 @@
+title: NCA-0002-0009.1005 - Collection - Robocopy Tool
+id: d50d6ad8-1e03-48ff-a14d-545fa894abab
+author: NCA
+description: This rule identifies potentially data collection using robocoby tool
+status: experimental
+logsource:
+  product: windows
+  service: Sysmon
+  service: security
+detection:
+  selection:
+    EventID: 
+      - 4688
+      - 1
+    CommandLine|contains: robocopy
+  condition: selection
+falsepositives:
+  - "Unknown"
+level: medium

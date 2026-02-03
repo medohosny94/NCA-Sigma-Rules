@@ -1,0 +1,15 @@
+title: NCA-0001-0009.1114.002 Collection-mailexport
+id: f60e66ea-c6dc-482e-a87b-8d7fbbda043c
+author: NCA
+description: This Sigma rule focuses on detecting the exporting of mailboxes from Exchange to PST files. 
+status: expermintal
+logsource:
+  product: windows
+detection:
+  selection:
+    EventID: 4104
+    Message|contains: 'MailboxExportRequest'
+  condition: selection
+falsepositives:
+- administrator performs a legitimate mailbox export
+level: high

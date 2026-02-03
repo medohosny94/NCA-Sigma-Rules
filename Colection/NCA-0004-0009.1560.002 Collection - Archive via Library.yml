@@ -1,0 +1,22 @@
+title: NCA-0004-0009.1560.002 Collection - Archive via Library
+id: 73ad17ff-da99-40fc-ae64-0b40f8ac79a8
+author: NCA
+description: Detect potential archiveing files using library in powershell
+status: experimental
+logsource:
+  product: windows
+  service: powershell
+detection:
+  selection1:
+    EventID: 4104
+  selection2:
+    ScriptBlockText|contains: 
+      - 'Compression.ZipFile'
+  selection3:
+    ScriptBlockText|contains: 
+      - 'compress-archive'
+  condition: selection1 and (selection2 or selection3)
+falsepositives:
+- "Unknown"
+level: low
+

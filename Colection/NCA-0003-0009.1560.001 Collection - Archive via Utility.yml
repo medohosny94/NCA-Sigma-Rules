@@ -1,0 +1,27 @@
+title: NCA-0003-0009.1560.001 Collection - Archive via Utility
+id: ed36cb9e-49ce-447c-8482-cfa7b286aeda
+author: NCA
+description: Detect potential archiveing files using LOLBINS - makecab.exe
+status: experimental
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection1:
+    EventID: 1
+  selection2:
+    Image|endswith: 'makecab.exe'
+    ParentImage|endswith: 
+    - 'cmd.exe'
+    - 'powershell.exe'
+  selection3:
+    Image|endswith: 'makecab.exe'
+    CommandLine|contains: 
+    - '.rar'
+    - '.zip'
+    - '.7z'
+  condition: selection1 and (selection2 or selection3)
+falsepositives:
+- "Unknown"
+level: low
+
