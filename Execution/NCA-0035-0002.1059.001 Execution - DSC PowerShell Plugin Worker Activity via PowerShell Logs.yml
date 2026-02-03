@@ -1,0 +1,18 @@
+title: NCA-0035-0002.1059.001 Execution - DSC PowerShell Plugin Worker Activity via PowerShell Logs
+id: 85a1295e-abf0-4d1e-8f47-e18aafe2a8f7
+author: NCA
+description: Detects DSC PowerShell Plugin Worker activity (DscPsPluginWkr_AppDomain) logged in the Windows PowerShell operational channel. Adversaries may abuse DSC to execute PowerShell code or enforce malicious configurations on a system.
+status: experimental
+logsource:
+  product: windows
+  service: powershell
+detection:
+  selection:
+    EventID: 53504
+    param2|contains: "DscPsPluginWkr_AppDomain"
+  condition: selection
+falsepositives:
+  - Normal DSC configuration execution initiated by administrators
+  - Enterprise configuration management tools invoking DSC
+level: medium
+

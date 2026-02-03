@@ -1,0 +1,31 @@
+title: NCA-0010-0002.1204.002 Execution - Suspicious Process Execution From Microsoft Products
+id: 9d4a8b56-c0f8-45cf-b2fc-0f295d2e2883
+author: NCA
+description: This rule detects any suspicious execution of processes originating from Microsoft products
+status: stable
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    ParentImage|endswith:
+      - 'WINWORD.EXE'
+      - 'EXCEL.EXE'
+      - 'POWERPNT.exe'
+    Image|endswith:
+      - 'cmd.exe'
+      - 'powershell.exe'
+      - 'wscript.exe'
+      - 'cscript.exe'
+      - 'schtasks.exe'
+      - 'regsvr32.exe'
+      - 'wmic.exe'        
+      - 'mshta.exe'
+      - 'rundll32.exe'
+      - 'msiexec.exe'
+      - 'svchost.exe'        
+      - 'msbuild.exe'      
+  condition: selection
+falsepositives:
+- Unknown
+level: high

@@ -1,0 +1,18 @@
+title: NCA-0033-0002.1059.003 Execution - Process Spawned by cmd.exe with ErrorHandler.cmd Command Line
+id: afac808f-4d25-4587-b02e-90be7f842e95
+author: NCA
+description: Detects processes spawned by `cmd.exe` where the parent command line contains `ErrorHandler.cmd`. This could be indicative malicious activity leveraging the `ErrorHandler.cmd` script.
+status: stable
+logsource:
+    product: windows
+    category: Sysmon
+detection:
+    selection:
+        EventID: 1
+        ParentImage|endswith: cmd.exe
+        ParentComandline|contains: ErrorHandler.cmd
+    condition: selection
+falsepositives:
+    - System administrators using `ErrorHandler.cmd` for troubleshooting or maintenance
+    - Automated tasks or scripts executing legitimate processes through `ErrorHandler.cmd`
+level: medium

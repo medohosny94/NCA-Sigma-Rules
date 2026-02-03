@@ -1,0 +1,20 @@
+title: NCA-0005-0002.1047 Execution - WMI
+id: 52a8243f-a3b0-41da-a4b6-38f61c97b6f3
+author: NCA
+lastupdate: 17/8/2023
+description: Detect the usage of Windows Management Instrumentation (WMI) for executing commands locally or remotely.
+status: experimental
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+   selection:
+        EventID: 1
+        ParentImage|endswith: 'wmiprvse.exe'
+        Image|endswith: 
+            - 'powershell.exe'
+            - 'cmd.exe'        
+   condition: selection 
+falsepositives:
+- "Vulnerability scanners and Microsoft SCCM"
+level: high

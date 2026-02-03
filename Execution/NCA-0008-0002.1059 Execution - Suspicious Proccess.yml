@@ -1,0 +1,23 @@
+title: NCA-0008-0002.1059 Execution - Suspicious Proccess
+id: cc87ff76-c921-4572-8d15-93b98dc820a8
+author: NCA
+description: This rule identifies potentially suspicious processes that have parent images situated in the C:\Users\Public directory
+status: experimental
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    ParentImage|startswith: 'C:\Users\Public\'
+    CommandLine|contains: 
+      - 'powershell'
+      - 'cmd.exe'
+      - 'wscript.exe'
+      - 'cscript.exe'
+      - 'bitsadmin'
+      - 'certutil'
+      - 'mshta.exe'
+  condition: selection
+falsepositives:
+  - "Unknown"
+level: high

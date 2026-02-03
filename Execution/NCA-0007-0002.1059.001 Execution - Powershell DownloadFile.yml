@@ -1,0 +1,16 @@
+title: NCA-0007-0002.1059.001 Execution - Powershell DownloadFile
+id: bd43b434-d00e-4a2a-b389-5271e4d7bfa1
+author: NCA
+description: Detect the downloading of files using PowerShell via the .Net.WebClient class.
+status: stable
+logsource:
+  product: windows
+  service: powershell
+detection:
+  selection:
+    EventID: 4104
+    ScriptBlockText|contains: 'DownloadFile'
+  condition: selection 
+falsepositives:
+- "Legitimate powershell scripts that uses .Net Webclient to download files from internal websites"
+level: Low

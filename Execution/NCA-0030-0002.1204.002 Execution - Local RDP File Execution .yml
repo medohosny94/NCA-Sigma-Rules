@@ -1,0 +1,21 @@
+title: NCA-0030-0002.1204.002 Execution - Local RDP File Execution
+id: 50c6b3c4-b686-421a-89ae-19966f793cd0
+author: NCA
+description:  This detection rule identifies potential instances of RDP connections initiated via the Microsoft Remote Desktop Connection (mstsc.exe) application using a local ".rdp" file. These suspicious activities could indicate unauthorized RDP connections.
+status: stable
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+      selection:      
+         EventID: 1
+         Image|endswith: 'mstsc.exe'
+         CommandLine|contains: '.rdp'
+      filter:
+         ParentImage: 'C:\Windows\System32\lxss\wslhost.exe'
+         CommandLine|contains: 'C:\ProgramData\Microsoft\WSL\wslg.rdp'
+      condition: selection and not filter
+falsepositives:
+    - Likely with legitimate usage of ".rdp" files, especially when used in privileged access management (PAM) environments for authorized remote desktop connections.
+level: low
+

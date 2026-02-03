@@ -1,0 +1,27 @@
+title: Execution - Shortcut File Creation by Office Applications
+id: 010873d4-f7b2-48b7-908d-44cbdd28b59e
+author: NCA
+description: Detects instances where the Microsoft applications create shortcut of files.
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        EventID: 11
+        Image|endswith:
+        - 'winword.exe'
+        - 'excel.exe'
+        - 'powerpoint.exe'
+        - 'powerpnt.exe'
+        - 'onenote.exe'
+        - 'outlook.exe'
+        TargetFileName: '*.lnk'
+    filter:
+        TargetFileName|contains:
+            - '\Roaming\Microsoft\Office\Recent\'
+            - '\AppData\Roaming\Microsoft\'
+    condition: selection and not filter 
+falsepositives:
+- Legitimate created file shortcuts that are used in your environment
+level: medium

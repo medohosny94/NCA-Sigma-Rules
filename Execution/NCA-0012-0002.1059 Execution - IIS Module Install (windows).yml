@@ -1,0 +1,19 @@
+title: NCA-0012-0002.1059 Execution - IIS Module Install (windows)
+id: 55cc446a-1b9d-4078-b395-320e1d445264
+author: NCA
+description: This rule detects potentially suspicious installations of IIS native-code modules through the command line.
+status: experimental
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4688
+    ProcessCommandLine|startswith: appcmd
+    ProcessCommandLine|contains|all:
+    - 'install'
+    - 'module'
+  condition: selection
+falsepositives:
+- Unknown
+level: high

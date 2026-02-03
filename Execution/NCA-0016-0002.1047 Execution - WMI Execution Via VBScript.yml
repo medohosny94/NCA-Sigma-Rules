@@ -1,0 +1,17 @@
+title: NCA-0016-0002.1047 Execution - WMI Execution Via VBScript
+id: 4a44c129-f9d2-4f00-ba1d-97fee4478906
+author: NCA
+description: Detect the creation of WMI (Windows Management Instrumentation) execution through VBScript. It focuses on Windows systems and relies on Sysmon event logs for monitoring.
+status: experimental
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 7
+    Image|endswith: 'wscript.exe'
+    ImageLoaded|endswith: 'wmiutils.dll'
+  condition: selection
+falsepositives:
+- Unknown
+level: low

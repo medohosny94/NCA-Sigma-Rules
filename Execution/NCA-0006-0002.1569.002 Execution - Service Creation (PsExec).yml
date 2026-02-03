@@ -1,0 +1,17 @@
+title: NCA-0006-0002.1569.002 Execution - Service Creation (PsExec)
+id: 668052c3-188b-455b-a48d-6e8ff4684aea
+author: NCA
+description: Monitor for the creation of a new PsExec service in order to detect potential execution or lateral movement activities.
+status: stable
+logsource:
+  product: windows
+  service: system
+detection:
+  selection:
+    EventID: 7045
+    ServiceName: psexesvc
+  condition:
+  - selection
+falsepositives:
+- "Legitmate use of PsExec"
+level: high

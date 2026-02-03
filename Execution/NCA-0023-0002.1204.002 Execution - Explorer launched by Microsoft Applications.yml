@@ -1,0 +1,23 @@
+title: Execution - Explorer launched by Microsoft Applications
+id: b00b1d09-899c-4a90-ace3-9b11549b6f9c
+author: NCA
+description: Detects instances where Microsoft Applications launched the Windows File Explorer (explorer.exe). The purpose of this rule is to identify potential suspicious behavior where applications initiate the opening of the system's file explorer. 
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        EventID: 1
+        ParentImage|endswith: 
+        - 'winword.exe'
+        - 'excel.exe'
+        - 'powerpoint.exe'
+        - 'powerpnt.exe'
+        - 'onenote.exe'
+        - 'outlook.exe'
+        Image|endswith: 'explorer.exe'
+    condition: selection
+falsepositives:
+- Legitimate macro-enabled Word documents are commonly used for business processes
+level: high

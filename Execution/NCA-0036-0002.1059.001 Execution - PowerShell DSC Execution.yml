@@ -1,0 +1,23 @@
+title: NCA-0036-0002.1059.001 Execution - PowerShell DSC Execution
+id: 50b54906-88ed-40be-ba27-5402f840fe18
+author: NCA
+description: Detects when a Desired State Configuration (DSC) starts execution on a Windows node. This event indicates that a DSC resource has been sent to the target system for application. Adversaries may abuse it to execute arbitrary PowerShell code, apply malicious configuration changes, or establish persistence. Note that to detect this threat, the following channel “Microsoft-Windows-DSC/Operational” must be shipped
+status: stable
+logsource:
+    product: windows
+    channel: Microsoft-Windows-DSC/Operational
+detection:
+    selection:
+        EventID:
+            - 4411
+            - 4401
+            - 4102
+            - 4407
+            - 4110
+    condition: selection
+falsepositives:
+    - Legitimate administrative use of DSC for baseline configuration enforcement
+    - Enterprise IT automation tools triggering DSC
+    - Scheduled tasks or group policies deploying DSC configurations
+level: medium
+

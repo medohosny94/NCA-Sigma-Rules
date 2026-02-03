@@ -1,0 +1,20 @@
+title: NCA-0028-0002.1569.002 Execution - Disable Windows Defender via Service
+id: bf4d3cfa-f62b-4719-bfa3-08e82f9d252a
+author: NCA
+description: Detects Windows Defender disabling service installation
+status: experimental
+logsource:
+    product: windows
+    service: system
+detection:
+    selection:
+        Provider_Name: 'Service Control Manager'
+        EventID: 7045
+        ImagePath|contains|all:
+            - 'Set-MpPreference'
+            - '-DisableRealtimeMonitoring'
+            - 'powershell'
+    condition: selection
+falsepositives:
+    - Unknown
+level: medium

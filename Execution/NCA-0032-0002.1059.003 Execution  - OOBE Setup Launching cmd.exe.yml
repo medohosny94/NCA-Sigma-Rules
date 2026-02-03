@@ -1,0 +1,24 @@
+title: NCA-0032-0002.1059.003 Execution - OOBE Setup Launching cmd.exe
+id: f551f93a-9d24-42b8-825e-990dc8b9d728
+author: NCA
+description: Detects instances where ‘cmd.exe’ is launched by the Out-of-Box Experience (OOBE) processes ‘oobeldr.exe, audit.exe and setup.exe’ from the path ‘C:\Windows\system32\oobe\’, specifically when the parent command line contains `ErrorHandler.cmd`. This could indicate potential misuse or tampering.
+status: stable
+logsource:
+    product: windows
+    category: Sysmon
+detection:
+    selection:
+        EventID: 1
+        Image|endswith: cmd.exe
+        ParentImage: 
+         - C:\Windows\system32\oobe\setup.exe
+         - C:\Windows\system32\oobe\audit.exe  
+         - C:\Windows\system32\oobe\oobeldr.exe
+        ParentComandline|contains: ErrorHandler.cmd
+    filter:
+        ParentImage|endswith: explorer.exe
+    condition: selection AND NOT filter
+falsepositives:
+    - Legitimate OOBE processes or troubleshooting commands during system setup
+    - Scripts invoked by system administrators for system initialization
+level: high

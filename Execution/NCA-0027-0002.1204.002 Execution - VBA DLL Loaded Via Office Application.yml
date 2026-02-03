@@ -1,0 +1,26 @@
+title: Execution - VBA DLL Loaded Via Office Application
+id: 0690b9bc-5cf0-4cf4-9d10-62cc53abc803
+author: NCA
+description: Detects the loading of VBA DLLs by various Office applications running on a Windows system. Such DLL loading events can be indicative of the presence of VBA macros, which might be a security concern. 
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        EventID: 7
+        Image|endswith:
+            - 'winword.exe'
+            - 'excel.exe'
+            - 'powerpoint.exe'
+            - 'powerpnt.exe'
+            - 'onenote.exe'
+            - 'outlook.exe'
+        ImageLoaded|endswith:
+            - 'VBE7.DLL'
+            - 'VBEUI.DLL'
+            - 'VBE7INTL.DLL'
+    condition: selection
+falsepositives:
+- Legitimate macro usage. Add the appropriate filter according to your environment
+level: low

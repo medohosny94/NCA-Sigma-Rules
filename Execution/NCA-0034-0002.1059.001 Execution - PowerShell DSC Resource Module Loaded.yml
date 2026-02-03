@@ -1,0 +1,16 @@
+title: NCA-0034-0002.1059.001 Execution - PowerShell DSC Resource Module Loaded
+id: b7657e5a-6f67-4910-b50e-ca39a05df31c
+author: NCA
+description: Detects PowerShell script block execution involving the Desired State Configuration resource module (`PSDesiredStateConfiguration.Resource.psd1`). Adversaries may abuse DSC modules to execute PowerShell code or enforce malicious configurations for persistence.
+status: stable
+logsource:
+  product: windows
+  channel: ps_script
+detection:
+  selection:
+    ScriptBlockText|contains: PSDesiredStateConfiguration.Resource.psd1
+  condition: selection
+falsepositives:
+  - Normal DSC deployment by administrators
+  - Enterprise configuration management tools loading DSC resources 
+level: medium

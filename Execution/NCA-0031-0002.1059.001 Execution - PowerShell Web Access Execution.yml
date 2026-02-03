@@ -1,0 +1,17 @@
+title: NCA-0031-0002.1059.001 Execution - PowerShell Web Access Execution
+id: db7fa391-31b9-4d58-9f67-70f52d65c85e
+author: NCA
+description: Detects the execution of PowerShell Web Access (PSWA), which can be used for legitimate remote access by administrators but may also be exploited by adversaries for persistence or remote execution of malicious commands.
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        EventID: 7
+        User|endswith: pswa_pool
+        Image|endswith: w3wp.exe
+    condition: selection
+falsepositives:
+    - Legitimate PowerShell Web Access execution by administrators
+level: high

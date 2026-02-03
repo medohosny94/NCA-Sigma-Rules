@@ -1,0 +1,28 @@
+title: Execution - File Creation by Office Applications
+id: 1b169b3d-e3c7-4a26-ad50-02d89aadf5b2
+author: 
+description: Detects instances where the Microsoft applications create certain types of files.
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        EventID: 11
+        Image|endswith: 
+        - 'winword.exe'
+        - 'excel.exe'
+        - 'powerpoint.exe'
+        - 'powerpnt.exe'
+        - 'onenote.exe'
+        - 'outlook.exe'
+        TargetFileName: 
+         - '*.exe'
+         - '*.dll'
+         - '*.cpl'
+    condition: selection 
+falsepositives:
+- Legitimate created file types that are used in your environment
+level: medium
+
+

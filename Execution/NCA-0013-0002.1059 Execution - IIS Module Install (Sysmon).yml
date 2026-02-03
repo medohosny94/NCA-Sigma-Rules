@@ -1,0 +1,19 @@
+title: NCA-0013-0002.1059 IIS Module Install (Sysmon)
+id: 9a23618e-b0a8-465f-86f5-03ead9672183
+author: NCA
+description: This rule detects potentially suspicious installations of IIS native-code modules through the command line, modules are utilized by attacker to install a stealthy backdoor.
+status: stable
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 1
+    CommandLine|contains|all:
+    - 'appcmd'
+    - 'install'
+    - 'module'
+  condition: selection
+falsepositives:
+- Updating Microsoft SCCM or new installation of IIS service
+level: high

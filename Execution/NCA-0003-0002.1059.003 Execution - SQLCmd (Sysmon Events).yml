@@ -1,0 +1,32 @@
+title: NCA-0003-0002.1059.003 Execution - SQLCmd (Sysmon Events)
+id: 107e2d6f-d891-44b3-acdd-29add0b8fe6c
+author: NCA
+lastupdate: 17/8/2023
+description: This Sigma rule focuses on detecting the execution of the SQLCmd command against Microsoft SQL Database servers
+status: experimental
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection1:
+    EventID: 1
+  selection2:
+    ParentImage|endswith: 
+    - 'sqlservr.exe'
+    - 'sqlagent.exe'
+    - 'sqlserver.exe'
+  selection3:
+    Image|endswith: 
+    - 'cmd.exe'
+    - 'powershell.exe'
+    - 'pwsh.exe'
+    - 'mshta.exe'
+
+  condition: selection1 and selection2 and selection3
+falsepositives:
+- unknown
+level: high
+
+
+
+

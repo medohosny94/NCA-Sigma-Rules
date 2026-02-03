@@ -1,0 +1,19 @@
+title: NCA-0029-0002.1059 Execution - SSH Commands Execution (Windows)
+id: 6f78eae8-8d3b-4011-b713-6b4b295817bc
+author: NCA
+description: This detection rule identifies suspicious instances of SSH commands being executed, with ssh.exe as the parent image. This may indicate unauthorized or malicious activity.
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        EventID: 1
+        Image|endswith:
+        - 'cmd.exe'
+        - 'powershell.exe'
+        ParentImage|endswith: ssh.exe
+    condition: selection
+falsepositives:
+    - Legitimate administrative or development activities where SSH is used for authorized purposes, such as system administration, remote server management, or file transfer operations.
+level: medium

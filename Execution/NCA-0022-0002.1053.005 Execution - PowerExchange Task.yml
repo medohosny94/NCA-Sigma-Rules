@@ -1,0 +1,18 @@
+title: NCA-0022-0002.1053.005 Execution - PowerExchange Task
+id: ce457335-9210-4d7e-b12b-1967c9182de4
+author: NCA
+description: Detect the creation of a scheduled task by PowerExchange. 
+status: experimental
+logsource:
+  product: windows
+  service: security 
+detection:
+  selection:
+    EventID:
+      - '4698'
+    TaskName|contains:
+      - 'MicrosoftEdgeUpdateService'
+  condition: selection
+falsepositives:
+- Unknown
+level: medium

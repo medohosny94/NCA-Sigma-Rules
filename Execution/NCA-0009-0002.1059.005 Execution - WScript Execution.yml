@@ -1,0 +1,20 @@
+title: NCA-0009-0002.1059.005 Execution - WScript Execution
+id: 0f3bf46a-cf81-4f11-aaaf-56207dfb0e04
+author: NCA
+description: This rule is designed to monitor the execution of cmd.exe and powershell.exe processes that originate from wscript.exe. Its purpose is to detect phishing documents that exploit macros
+status: stable
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 1
+    ParentImage|endswith:
+    - 'wscript.exe'
+    Image|endswith:
+    - 'cmd.exe'
+    - 'powershell.exe'
+  condition: selection
+falsepositives:
+- Admin scripts could be utalized to run system shell commands.
+level: high

@@ -1,0 +1,27 @@
+title: NCA-0015-0002-1059 Execution - Suspicious MSHTA Process Patterns
+id: be035638-6181-4841-bdb6-3815906cadb6
+author: NCA
+description: Detect suspicious patterns related to the mshta.exe process. It focuses on Windows systems and relies on process creation events for monitoring.
+status: experimental
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection1:
+        EventID: 1
+        Image|endswith: 'mshta.exe'
+    selection2:
+        CommandLine|contains: 
+            - 'AppData\Local'
+            - 'C:\Windows\Temp'
+            - 'C:\Users\Public'
+            - 'javascript'
+            - 'hta'
+            - 'htm'
+            - 'vbscript'
+            - 'http'
+            - 'https'          
+    condition: selection1 and selection2
+falsepositives:
+    - "Unknown"
+level: high

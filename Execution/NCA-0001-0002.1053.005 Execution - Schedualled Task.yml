@@ -1,0 +1,20 @@
+title: NCA-0001-0002.1053.005 Execution - Schedualled Task
+id: 5853d02d-b8e1-4f5f-9558-9eba447c67ed
+author: NCA
+description: This Sigma rule detects the creation of scheduled tasks within a user session. Attackers establish automated processes for maintaining access, gathering information, communicating with external servers, executing malicious payloads, and blending in with normal system behavior.
+status: stable
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 1
+    Image|endswith: 'schtasks.exe'
+    CommandLine|contains: 'create'
+  filter:
+    User: 'NT AUTHORITY\SYSTEM'
+  condition: selection and not filter
+falsepositives:
+- Administrative activity
+- Software installation
+level: low

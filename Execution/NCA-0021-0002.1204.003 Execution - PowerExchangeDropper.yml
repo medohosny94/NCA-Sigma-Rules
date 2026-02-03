@@ -1,0 +1,21 @@
+title: NCA-0021-0002.1204.003 Execution - PowerExchangeDropper
+id: 0c39464c-b7bd-4177-824e-c45336cd6c6b
+author: NCA
+description: Detect the dropping of PowerExchange components. 
+status: experimental
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection1:
+    EventID: 11
+  selection2:
+    TargetFilename|contains:
+    - 'c:\users\public\microsoftedge\autosave.exe'
+    - 'c:\users\public\microsoftedge\wsdl.ps1'
+  selection3:
+    Image|endswith: "brochure.exe"
+  condition:  selection1 and selection2 and selection3
+falsepositives:
+- Unknown
+level: high

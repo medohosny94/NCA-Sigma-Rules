@@ -1,0 +1,18 @@
+title: Execution - CPL Execution (Registry Modification)
+id: df64abf3-73d8-48bf-83cc-a3ac831346ba
+author: NCA
+description: Detects the registry "\SOFTWARE\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\Store" Modifications when CPL file is executed.
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        EventID: 13
+        TargetObject|contains|all:
+        - cpl
+        - store
+    condition: selection
+falsepositives:
+- Legitimate CPL files. Add the appropriate filter according to your environment
+level: medium
