@@ -1,0 +1,28 @@
+title: NCA-0003-0003.1505.003 Persistence - Webshell Detection File write (Exchange Folders)
+id: 06956b74-0a8c-4ab0-b54e-d8c3a12b8f3b
+author: NCA
+description: This Sigma rule focuses on detecting any file write activity within the OWA (Outlook Web App) application folder, which may indicate backdoor installation activity.
+status: expermintal
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 11
+    TargetFilename|contains|all:
+    - FrontEnd
+    - HttpProxy
+    TargetFilename|contains:
+    - owa
+    - autodiscover
+    - ecp
+    - ews
+    TargetFilename|endswith:
+    - aspx
+    - asp
+    - txt
+    - dll
+  condition: selection
+falsepositives:
+- windows updates
+level: medium

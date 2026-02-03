@@ -1,0 +1,23 @@
+title: NCA-0022-0003.1546.003 Persistence - PowerShell DSC MOF and JSON Application
+id: a7930d8f-89e4-440f-b68f-8a801ad0e60b
+author: NCA
+description: Detects when Desired State Configuration (DSC) MOF files are applied and configuration status JSON files are generated on a Windows endpoint using the `Start-DscConfiguration` cmdlet. Adversaries may abuse MOF application to maintain persistence by enforcing malicious configurations. JSON files indicate the state or outcome of DSC execution, providing additional context for monitoring legitimate and potentially malicious activity. Note that to detect this threat, the following path "C:\Windows\system32\Configuration\" must be included in Sysmon configuration file, please refer back to NCA guidelines for windows and Sysmon auditing.
+status: stable
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains:
+      - 'C:\Windows\system32\Configuration\'
+  selection1:
+    TargetFilename|endswith:
+      - '.details.json'
+      - '.mof'
+  condition: selection AND selection1
+falsepositives:
+  - Legitimate application of MOF files by administrators for DSC configuration
+  - DSC-generated JSON status files created during normal applying DSC resources
+  - Scheduled tasks or scripts deploying DSC configurations as intended
+level: medium
+

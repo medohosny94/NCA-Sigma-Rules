@@ -1,0 +1,19 @@
+title: NCA-0015-0003.1546.009 Persistence - AppCert tamper (Registry Creation or Modification)
+id: b07ad5e0-dd95-4114-bc5b-3900ce770005
+author: NCA
+description: Detects creation or modification of the registry keys related to AppCert which could indicate malicious DLLs insertion attempt to maintain persistence.
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        EventID:
+        - 12
+        - 13
+        TargetObject|contains:
+        - "\System\CurrentControlSet\Control\Session Manager"
+    condition: selection
+falsepositives:
+- Legitimate software installation or updates that modify or create these keys.
+level: High

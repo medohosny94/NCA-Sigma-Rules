@@ -1,0 +1,16 @@
+title: NCA-0021-0003.1546 Persistence - ErrorHandler.cmd File Creation
+id: 6c88373b-4b29-4bda-8c40-63f42ac4f87b
+author: NCA
+description: Detects the creation of the file ErrorHandler.cmd in the C:\Windows\Setup\Scripts directory. This file is targeted for potential abuse by adversaries as it is executed with SYSTEM privilege as a result of setup.exe execution. Note that to detect the file creation, the following target file "C:\Windows\Setup\Scripts\ErrorHandler.cmd" must be included in Sysmon configuration file, please refer back to NCA guidelines for windows and Sysmon auditing.
+status: stable
+logsource:
+    product: windows
+    category: Sysmon
+detection:
+    selection:
+        EventID: 11
+        TargetFilename: C:\Windows\Setup\Scripts\ErrorHandler.cmd
+    condition: selection
+falsepositives:
+    - Legitimate placed by system administrators or installation scripts.
+level: high

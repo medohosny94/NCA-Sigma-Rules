@@ -1,0 +1,17 @@
+title: NCA-0005-0003.1505.003 Persistence - Webshell Detection Tunna
+id: 64eac16c-2129-4298-b574-d416c74950e6
+author: NCA
+description: Detect the activity of a Tunna webshell that creates a local network connection on port 3389.
+status: experimental
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 3
+    Image|endswith: w3wp.exe
+    DestinationPort: 3389
+  condition: selection 
+falsepositives:
+- "Unknown"
+level: high

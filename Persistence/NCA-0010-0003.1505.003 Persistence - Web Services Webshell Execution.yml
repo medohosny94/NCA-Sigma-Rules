@@ -1,0 +1,25 @@
+title: NCA-0010-0003.1505.003 Persistence - Web Services Webshell Execution
+id: 289d19f7-d87d-4f35-9069-d32883c1ae84
+author: NCA
+description: This rule is designed to monitor the execution of cmd.exe and powershell.exe processes that are spawned by a web server process. Its purpose is to identify any suspicious activity or behavior associated with these processes.
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+      selection:
+        ParentImage|contains:
+            - 'apache*'
+            - 'tomcat*'
+            - 'w3wp.exe'
+            - 'php-cgi.exe'
+            - 'nginx.exe'
+            - 'httpd.exe'
+        Image|endswith:
+            - 'cmd.exe'
+            - 'powershell.exe'
+      condition: selection
+falsepositives:
+- "Web applications that retrives system information and perform AD query via system shell. Can be excluded as a full/partial command. Example added."
+- "The detection does not include the commands that has been run by the attacker."
+level: low

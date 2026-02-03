@@ -1,0 +1,18 @@
+title: NCA-0018-0003.1505.004 Persistence - PowerShell Web Access Installation - PsScript
+id: eab9efa-ba83-4e93-bf8c-8f7ba5422456
+auther: NCA
+description: Detects the installation and configuration of PowerShell Web Access (PSWA) via script execution. While PSWA is used for remote administration, adversaries may leverage its installation for persistence and remote access, leading to potential abuse.
+status: stable
+logsource:
+    product: windows
+    service: powershell
+detection:
+    selection:
+        EventID: 4104
+        ScriptBlockText|contains: 
+         - 'WindowsPowerShellWebAccess'
+         - 'Install-PswaWebApplication'
+    condition: selection
+falsepositives:
+    - Legitimate installation and configuration of PowerShell Web Access by system administrators for remote management.
+level: high

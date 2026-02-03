@@ -1,0 +1,19 @@
+title: NCA-0024-0003.1098.002 Persistence - Exchange ApplicationImpersonation Role Assignment via PowerShell
+id: c51e9f13-c93d-4c25-b1a0-f358ba5c0033
+author: NCA
+description: Detects PowerShell activity that assign the 'ApplicationImpersonation' managment role in MS Exchange, which adversaries may use to maintain persistent access or impersonate users.
+status: stable
+logsource:
+  product: windows
+  service: powershell
+  category: script_block
+detection:
+  selection:
+    ScriptBlockText|contains|all:
+      - 'New-ManagementRoleAssignment '
+      - 'ApplicationImpersonation'
+  condition: selection 
+falsepositives:
+  - Legitimate Exchange administrative tasks or automated provisioning scripts
+  - Initial Exchange configuration by systema admin.
+level: high

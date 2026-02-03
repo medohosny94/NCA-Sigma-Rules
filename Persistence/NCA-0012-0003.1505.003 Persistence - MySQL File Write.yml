@@ -1,0 +1,23 @@
+title: NCA-0012-0003.1505.003 Persistence - MySQL File Write
+id: 501fa092-45e7-4c8f-927d-5f3c46c7c820
+description: Detects file creation by mysql process
+author: NCA
+status: experimental
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    Image|endswith:
+      - 'mysqld.exe'
+    TargetFilename|endswith:
+      - '.php'
+      - '.exe'
+      - '.dll'
+      - '.cmd'   
+      - '.bat'
+      - '.ps1'
+  condition: selection
+falsepositives:
+  - unknown
+level: medium

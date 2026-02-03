@@ -1,0 +1,26 @@
+title: NCA-0004-0003.1505.003 Persistence - Webshell Detection File write
+id: 5b8e37d6-cf83-4c89-bc40-250226b4de43
+author: NCA
+description: Detect the activity of using a webshell to create files on the file system. It covers various techniques, including the use of the Tunna Webshell, exploitation of Remote Code Execution (RCE) vulnerabilities, and the utilization of file upload functionality to upload potentially malicious files.
+status: stable
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 11
+    Image|endswith: w3wp.exe
+    TargetFilename|endswith:
+    - 'txt'
+    - 'exe'
+    - 'aspx'
+    - 'asp'
+    - 'cer'
+  filter1:
+    TargetFilename|endswith: report.txt
+  filter2:
+    TargetFilename|startswith: c:\windows\microsoft.net\
+  condition: selection and (not filter1) and (not filter2)
+falsepositives:
+- Web applications that performs file write applications, such as file uploads or writing reports in TXT formats.
+level: low

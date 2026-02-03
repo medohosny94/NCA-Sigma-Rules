@@ -1,0 +1,18 @@
+title: NCA-0006-0003.1505.003 Persistence - Webshell Detection MSExchangeMailboxReplication ASPX Write
+id: 8f1e6948-5e99-4a03-a10a-be71f387e56f
+author: NCA
+description: Detect suspicious activity in which the MSExchangeMailboxReplication process writes .asp and .aspx files to disk. This activity could be indicative of ProxyShell exploitation which is a vulnerability in Microsoft Exchange Server.
+status: experimental
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        Image|endswith: 'MSExchangeMailboxReplication.exe'
+        TargetFilename|endswith: 
+            - '.aspx'
+            - '.asp'
+    condition: selection
+falsepositives:
+- Unknown
+level: high

@@ -1,0 +1,17 @@
+title: NCA-0019-0003.1505.004 Persistence - PowerShell Web Access (PSWA) Requests Handle Configuration
+id: 265ada38-87e9-47c2-9196-4feff562a2b6
+author: NCA
+description: Detects the configuration of PowerShell Web Access request, which could be used for remote access and potential abuse
+status: stable
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventID: 4688
+        ProcessName|endswith: w3wp.exe
+        Commandline|contains: pswa_pool
+    condition: selection
+falsepositives:
+    - Legitimate PowerShell Web Access configuration by administrators
+level: medium

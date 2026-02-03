@@ -1,0 +1,20 @@
+title: NCA-0011-0003.1546  Persistence - Accessibility Features
+id: 22829843-0eff-4ec0-9c65-7d4073287b39
+author: NCA
+description: Adversaries may establish persistence and/or elevate privileges by executing malicious content triggered by accessibility features.
+status: experimental
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 13
+    TargetObject:
+    - 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\sethc.exe\Debugger'
+    - 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\Magnify.exe\Debugger'
+    - 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\HelpPane.exe\Debugger'
+    - 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\utilman.exe\Debugger'
+  condition: selection
+falsepositives: 
+- unknown
+level: medium

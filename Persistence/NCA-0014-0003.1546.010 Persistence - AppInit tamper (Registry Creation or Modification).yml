@@ -1,0 +1,20 @@
+title: NCA-0014-0003.1546.010 Persistence - AppInit tamper (Registry Creation or Modification)
+id: 061b6ccc-d6a1-4150-86bf-9ef0c040017c
+author: NCA
+description: Detects creation or modification of the registry keys related to AppInit which could indicate malicious DLLs insertion attempt to maintain persistence.
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        EventID:
+        - 12
+        - 13
+        TargetObject|contains:
+        - "\Microsoft\Windows NT\CurrentVersion\Windows\AppInit_DLLs"
+        - "\Microsoft\Windows NT\CurrentVersion\Windows\LoadAppInit_DLLs"
+    condition: selection
+falsepositives:
+- Legitimate software installation or updates that modify or create these keys.
+level: High

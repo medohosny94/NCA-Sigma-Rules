@@ -1,0 +1,31 @@
+title: NCA-0009-0003.1547.001 Persistence - Windows Registry Run Keys Modifications
+id: 0a2300ff-62cf-4830-a2f9-2d767b498cce
+author: NCA
+description:  This rule identifies any alterations made to registry keys that have the potential to initiate the launch of an application or service during system startup
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection_registry_modifications:
+        EventID:
+            - 12
+            - 13
+        TargetObject|contains:
+            - 'UserInitMprLogonScript'  
+            - '\CurrentVersion\Image File Execution Options\'
+    selection_registry_run:
+        EventID:
+            - 12
+            - 13
+        TargetObject|contains:
+            - '\Microsoft\Windows\CurrentVersion\Run\'
+            - '\Microsoft\Windows\CurrentVersion\RunOnce\'
+            - '\Microsoft\Windows\CurrentVersion\RunOnceEx\'
+            - '\Microsoft\Windows\CurrentVersion\RunServicesOnce\'
+            - '\Microsoft\Windows\CurrentVersion\RunServices\'
+            - '\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run\'
+    condition: 1 of them
+falsepositives:
+- Legitimate applications that must execute on system startup and will use these registry keys to accomplish that task.
+level: low

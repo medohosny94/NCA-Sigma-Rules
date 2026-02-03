@@ -1,0 +1,21 @@
+title: NCA-0001-0003.1505.003 Persistence - Webshell Detection Process Execution (Sysmon)
+id: f79e0fdd-b015-45c3-91a4-daaf289f5356
+author: NCA
+description: this rule will monitor for process execution of cmd.exe and powershell.exe spawned from IIS process 'w3wp.exe'
+status: stable
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  IIS:
+    EventID: 1
+    ParentImage|endswith:
+    - 'w3wp.exe'
+    Image|endswith:
+    - 'cmd.exe'
+    - 'powershell.exe'
+  condition:
+  - IIS 
+falsepositives:
+- Web applications that retrives system information and perform AD query via system shell. 
+level: high

@@ -1,0 +1,16 @@
+title: NCA-0008-0003.1547.001 Persistence - Startup Folder File Write
+id: 71a9edc9-e1d5-43df-b971-9f2b56082789
+author: NCA
+description: This rule identifies the presence of files being generated in the Windows startup directory, which may serve as a potential indication of persistence.
+status: experimental
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 11
+    TargetFilename|contains: 'Microsoft\Windows\Start Menu\Programs\StartUp'
+  condition: selection
+falsepositives:
+- Unknown
+level: low

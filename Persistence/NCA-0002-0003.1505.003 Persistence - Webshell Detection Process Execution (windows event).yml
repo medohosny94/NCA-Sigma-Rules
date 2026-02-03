@@ -1,0 +1,20 @@
+title: NCA-0002-0003.1505.003 Persistence - Webshell Detection Process Execution (windows event)
+id: 864b080a-03da-4abb-9d01-92707d52bbfa
+author: NCA
+description: this rule will monitor for process execution of cmd.exe and powershell.exe spawned from 'w3wp.exe'
+status: stable
+logsource:
+  product: windows
+  service: security
+detection:
+  IIS:
+    EventID: 4688
+    CreatorProcessName|endswith:
+    - 'w3wp.exe'
+    NewProcessName|endswith:
+    - 'cmd.exe'
+    - 'powershell.exe'
+  condition: IIS
+falsepositives:
+- Web applications that retrives system information and perform AD query via system shell. 
+level: high
