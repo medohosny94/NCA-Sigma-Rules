@@ -1,0 +1,18 @@
+title: NCA-0003-0008.1021.003 Lateral Movement - DCOM (Script Block)
+id: 15e5f5cf-0e12-4c28-a016-7d6d2fcd99c8
+author: NCA
+description: Detect signs of using the Distributed Component Object Model (DCOM) for lateral movement from the attacker's machine.
+status: experimental
+logsource:
+  product: windows
+  service: powershell
+detection:
+  selection: 
+    EventID: 4104
+    Message|contains:
+    - 'MMC20.Application'
+    - "activator*CreateInstance"
+  condition: selection
+falsepositives:
+- Unknown
+level: medium

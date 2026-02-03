@@ -1,0 +1,21 @@
+title: NCA-0012-0008-1563.002 Lateral Movement - RDP Hijacking (Tscon)
+id: 0c4f2268-c655-4532-a84c-5af40910f484
+author: NCA
+description: Detect any execution of tscon.exe using system privileges.
+status: experimental
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4688
+    NewProcessName|endswith: 'tscon.exe'
+    Local system id: S-1-5-18
+  selection2:
+    CreatorProcessName:
+      - "cmd.exe"
+      - "powershell.exe"
+  condition: selection and selection2
+falsepositives:
+- Unknown
+level: medium

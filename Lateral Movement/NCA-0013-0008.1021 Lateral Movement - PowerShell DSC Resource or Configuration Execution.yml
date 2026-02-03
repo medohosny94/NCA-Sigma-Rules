@@ -1,0 +1,17 @@
+title: NCA-0013-0008.1021 Lateral Movement - PowerShell DSC Resource or Configuration Execution
+id: e666f08c-e3bc-46a5-bd04-662f254b8c8b
+author: NCA
+description: Detects the execution of a Desired State Configuration (DSC) resource or configuration through PowerShell using the `Start-DscConfiguration` cmdlet. Adversaries may abuse it to execute arbitrary PowerShell code, enforce malicious configuration states, or establish persistence on compromised hosts.
+status: stable
+logsource:
+    product: windows
+    category: ps_script
+detection:
+    selection:
+        ScriptBlockText|contains: "Start-DscConfiguration"
+    condition: selection
+falsepositives:
+    - Legitimate administrative use of DSC for system configuration
+    - Configuration automation tools invoking DSC
+    - Scheduled tasks or group policies deploying DSC configurations
+level: medium

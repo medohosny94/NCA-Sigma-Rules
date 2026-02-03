@@ -1,0 +1,19 @@
+title: NCA-0009-0008.1550.003 Lateral Movement - Overpass the hash
+id: f23022a3-e5d2-49d4-9c74-e6f9ccbe6b71
+author: NCA
+description: Detects the usage of NTLM hashes to acquire Kerberos authentication or service tickets (TGT)
+status: stable
+logsource:
+    product: windows
+    service: security
+detection:
+    selection1:
+        - EventID:
+          - '4768'
+          - '4769'
+    selection2:
+        - TicketEncryptionType: '0x17'
+    condition: selection1 and selection2
+falsepositives:
+- Legacy or in-house application using RC4 algorithm when requesting a kerberos ticket.
+level: medium

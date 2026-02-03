@@ -1,0 +1,17 @@
+title: NCA-0011-0008.1021.006 Lateral Movement - WinRM
+id:  ef6a778a-eda7-4333-962c-da52c10b8be0
+author: NCA
+description: This rule identifies the usage of WinRM (Windows Remote Management) through PowerShell, Evil-WinRM (excluding Metasploit).
+status: stable
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 12
+    Image|contains: wsmprovhost.exe
+    TargetObject|contains: Certificates
+  condition: selection
+falsepositives:
+- Legitimate Admin operation
+level: low

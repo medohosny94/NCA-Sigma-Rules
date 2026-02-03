@@ -1,0 +1,21 @@
+title: NCA-0006-0008.1021.002 Lateral Movement - SMB (Impacket)
+id: 9b7c7a2a-25a4-414c-9162-73063e71077b 
+author: NCA
+description: Detect the usage of PSExec on Cobalt Strike and Meterpreter. 
+status: experimental
+logsource:
+  product: windows
+  service: security
+detection:
+  selection1:
+    EventID: 5145
+    ShareName: Admin$
+    AccessMask: 0x1000a1
+  selection2:
+    EventID: 3
+    Image|endswith: powershell.exe
+    User: "nt\ authority\\system"
+  condition: selection1 or selection2
+falsepositives:
+- Unknown
+level: low

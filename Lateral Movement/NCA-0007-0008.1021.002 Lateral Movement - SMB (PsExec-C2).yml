@@ -1,0 +1,29 @@
+title: NCA-0007-0008.1021.002 Lateral Movement - SMB (PsExec-C2)
+id: e2ed31d3-4eb6-4007-aa62-322bab78249b
+author: NCA
+description: Detects the usage of PSExec on both Cobalt Strike and Meterpreter frameworks.
+status: stable
+logsource:
+  product: windows
+  service: security
+detection:
+  selection1:
+    EventID: 5145
+    ShareName: Admin$
+    AccessMask: 0x1000a1
+  selection2:
+    EventID: 5145
+    Relative Target Name:
+    - psexesvc
+    - remcom_communicaton
+    - svcctl
+    - PAExec
+    AccessMask: '0x12019f'
+  selection3:
+    EventID: 3
+    Image|endswith: powershell.exe
+    User|endswith: "system"
+  condition: selection1 OR selection3 OR selection2
+falsepositives:
+- "Legitimate use of PsExec on remote machines"
+level: low
