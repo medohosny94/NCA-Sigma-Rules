@@ -1,0 +1,21 @@
+title: NCA-0006-0004.1068 Privilege Escalation - PrintNightmare (ImageLoad - Sysmon)
+id: 03acdc33-2efd-4d4e-b0d2-c5c7d01319a8
+author: NCA
+description: Detect possible exploitation activities related to PrintNightmare vulnerability in the Windows Print Spooler service. This vulnerability, categorized as both Remote Code Execution (RCE) and Privilege Escalation, allows for the remote execution of DLL files on Windows servers with system privileges.
+status: experimental
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 7
+    Image|endswith: spoolsv.exe
+  Exclude:
+      ImageLoaded|endswith: 
+      - 'unidrv.dll'
+      - 'kernelbase.dll'
+  condition:
+  - selection and not Exclude 
+falsepositives:
+- Unknown
+level: High

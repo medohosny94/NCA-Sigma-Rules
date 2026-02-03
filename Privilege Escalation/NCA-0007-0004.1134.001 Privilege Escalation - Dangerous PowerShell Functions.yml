@@ -1,0 +1,26 @@
+title: NCA-0007-0004.1134.001 Privilege Escalation - Dangerous PowerShell Functions
+id: e72f9d4e-96e1-49bf-b0fd-99842962eae2
+author: NCA
+description: Detect the presence of common commands, functions, or flags that are commonly used in credential dumping activities using PowerShell.
+status: stable
+logsource:
+  product: windows
+  service: powershell
+detection:
+  selection1:
+    EventID: 4104
+  selection2:
+    ScriptBlockText|contains:
+    - 'Microsoft.Win32.UnsafeNativeMethods'
+    - 'MiniDumpWriteDump'
+    - 'SECURITY_DELEGATION'
+    - 'TOKEN_ALL_ACCESS'
+    - 'TOKEN_ASSIGN_PRIMARY'
+    - 'TOKEN_DUPLICATE'
+    - 'TOKEN_ELEVATION'
+    - 'TOKEN_IMPERSONATE'
+  condition: selection1 AND selection2
+falsepositives:
+- "Legitimate PowerShell scripts use token manipulation techniques or call Unsafe Native Methods."
+- "Scriptblock logging only logs the first use of the script to save log space."
+level: medium

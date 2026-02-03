@@ -1,0 +1,25 @@
+title: NCA-0008-0004.1068 Privilege Escalation - CallBackHell
+id: 42c01a33-4a63-4994-a3e1-5ab01731c252
+author: NCA
+description: This rule focuses on detecting potential privilege escalation activities related to the CallBackHell technique. It specifically checks if the mxdwdrv.dll module is being loaded by another process.
+status: experimental
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        ImageLoaded|endswith: mxdwdrv.dll
+        EventID: 7
+    filter:
+        Image|endswith:
+        - 'spoolsv.exe'
+        - 'splwow64.exe'
+        - 'EXCEL.EXE'
+        - 'POWERPNT.EXE'
+        - 'WINWORD.EXE'
+        - 'mspaint.exe'
+        - 'wordpad.exe'
+    condition: selection and not filter
+falsepositives:
+- Unknown
+level: medium

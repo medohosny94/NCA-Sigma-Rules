@@ -1,0 +1,16 @@
+title: NCA-0012-0004-1134.001- Privilege Escalation – Domain Escalation via dMSA
+id: 8d78b455-efd2-40d0-accc-21300a0c0628
+description: Detects Kerberos authentication using a Distributed Managed Service Account (dMSA) via Event ID 2946, where a TGT is issued with the KERB-DMSA-KEY-PACKAGE. It is required to enable directory service auditing (Event ID:2946) to detect this type of attack. please refer back to NCA guidelines for windows and Sysmon auditing
+status: stable
+author: NCA
+logsource:
+  product: windows
+  service: directory service
+detection:
+  selection:
+    EventID: 2946
+    SubjectUserSid: "S-1-5-7"
+  condition: selection
+falsepositives:
+  - Normal dMSA authentication under expected operations
+level: medium

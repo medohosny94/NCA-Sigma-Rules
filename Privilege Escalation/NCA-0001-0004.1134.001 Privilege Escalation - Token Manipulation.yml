@@ -1,0 +1,37 @@
+title: NCA-0001-0004.1134.001 Privilege Escalation - Token Manipulation
+id: 52ce64f9-f507-47d1-b144-fd6f962ce5db
+author: NCA
+description: This Sigma rule focuses on detecting privilege escalation through token manipulation. Adversaries commonly exploit this technique to elevate their security context from the administrator level to the SYSTEM level. 
+status: experimental
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4656
+    AccessMask:
+    - "0x1000"
+    - "0x1400"
+    ObjectName:
+    - dllhost.exe
+    - lsass.exe
+    - OfficeClickToRun.exe
+    - svchost.exe
+    - Sysmon64.exe
+    - unsecapp.exe
+    - VGAuthService.exe
+    - vmacthlp.exe
+    - vmtoolsd.exe
+    - winlogon.exe
+    - csrss.exe
+    - services.exe
+    - smss.exe
+    - wininit.exe
+  filter:
+    ProcessName|all:
+    - 'C:\ProgramData\Microsoft\Windows Defender\Platform\'
+    - '*\MsMpEng.exe'
+  condition: selection and not filter
+falsepositives:
+- unknown
+level: low

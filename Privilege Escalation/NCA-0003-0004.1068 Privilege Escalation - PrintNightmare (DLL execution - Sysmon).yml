@@ -1,0 +1,17 @@
+title: NCA-0003-0004.1068 Privilege Escalation - PrintNightmare (DLL execution - Sysmon)
+id: d5593a88-e39d-4901-9136-9ac7fd62e487
+author: NCA
+description: This Sigma rule aims to assist threat hunters in detecting any possible exploitation activities related to Windows Print Spooler service vulnerability. this vulnerability allows remote execution of DLL files on Windows servers with system privileges. The vulnerability has been categorized as both Remote Code Execution (RCE) and Privilege Escalation.
+status: experimental
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 1
+    ParentImage|endswith: spoolsv.exe
+    Image|endswith: rundll32.exe
+  condition: selection 
+falsepositives:
+- unknown
+level: high
