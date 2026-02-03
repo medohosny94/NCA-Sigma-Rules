@@ -1,0 +1,19 @@
+title: NCA-0002-0011.1572 Command and Control - Port Forwarding
+id: e262274e-fddb-4566-9383-7eba4292fffa
+author: NCA
+description: This experimental Sigma rule focuses on detecting the use of port forwarding, which involves creating local network connections on port 22 (SSH) or 3389 (RDP). Port forwarding is a technique commonly used in various threats, such as the Tunna webshell and chisel.
+status: experimental
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+   EventID: 3
+   DestinationIp: 127.0.0.1
+   DestinationPort:
+   - "3389"
+   - "22"
+  condition: selection
+falsepositives:
+- unknown
+level: medium

@@ -1,0 +1,16 @@
+title: NCA-0001-0011.1090.001 Command and Control - Port Proxy
+id: f0211740-149e-4554-8034-97b9a338f010
+author: NCA
+description: This Sigma rule focuses on detecting the use of port proxy by monitoring registry creation and deletion. Attackers often employ port proxy techniques to establish proxy tunnels, providing them with remote control capabilities over PowerShell-infected hosts from internet-based hosts. 
+status: experimental
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+   EventID: 12
+   TargetObject|startswith: HKLM\System\CurrentControlSet\Services\PortProxy\
+  condition:  selection
+falsepositives:
+- unknown
+level: medium

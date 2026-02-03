@@ -1,0 +1,16 @@
+title: NCA-0004-0011.1102.002 Command and Control - VS Code tunnel
+id: bfed5261-4b8d-476d-906b-9fb882c77a60
+author: NCA
+description: Detects successful creation of a tunnel to VS Code cloud. This technique is being used by adversaries to evade detection and execute commands on the affected server without being noticed. Note that to detect the file write event, the following path ".vscode\cli\code_tunnel.json" must be included in Sysmon configuration file, please refer back to NCA guidelines for Windows and Sysmon auditing.
+status: stable
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 11
+    TargetFilename|contains: '.vscode\cli\code_tunnel.json'
+  condition: selection
+falsepositives:
+- Development servers might use VS Code tunnels for remote development.
+level: medium

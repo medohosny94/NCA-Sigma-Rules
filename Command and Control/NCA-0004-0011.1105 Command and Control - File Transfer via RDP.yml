@@ -1,0 +1,16 @@
+title: NCA-0004-0011.1105 Command and Control - File Transfer via RDP
+id: 24af2692-acc1-4e2d-8aca-e7c8eece198f
+author: NCA
+description: This detection rule aims to identify potential instances of file dropping via the Microsoft Remote Desktop Protocol (RDP) using the mstsc.exe application. These suspicious activities could indicate unauthorized file transfers or command and control (C2) activity.
+status: stable
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+      selection:      
+         EventID: 11
+         Image|endswith: 'mstsc.exe'
+      condition: selection 
+falsepositives:
+    - Ligitimate Admin use that requires file transfer through RDP channels.
+level: high

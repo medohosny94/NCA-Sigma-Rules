@@ -1,0 +1,28 @@
+title: NCA-0003-0011.1095 - Command and Control - Earthworm Network Tunneling Tool
+id: dfe07bc0-8d4e-4070-bd2a-9247295df611
+author: NCA
+description: This rule identifies potentially suspicious Earthworm Network Tunneling Tool setup
+status: experimental
+logsource:
+  product: windows
+  service: Sysmon
+  service: security
+detection:
+  selection1:
+    EventID: 
+      - 4688
+      - 1
+    CommandLine|contains: 
+      - 'ssocksd'
+      - 'rcsocks'
+      - 'rssocks'
+      - 'lcx_slave'
+      - 'lcx_listen'
+      - 'lcx_tran'
+  selection2:
+    CommandLine|contains: 
+      - '-s'
+  condition: selection1 and selection2
+falsepositives:
+  - "Unknown"
+level: high
