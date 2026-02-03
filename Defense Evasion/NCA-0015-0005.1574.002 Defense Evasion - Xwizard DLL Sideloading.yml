@@ -1,0 +1,19 @@
+title: NCA-0015-0005.1574.002 Defense Evasion - Xwizard DLL Sideloading
+id: c33deb6e-3f60-4c93-95d9-56e41dab2311
+author: NCA
+description: Detect the execution of the Xwizard tool from a non-default directory, which may indicate an attempt to sideload a custom xwizards.dll. It focuses on Windows systems and relies on process creation events for monitoring.
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        Image|endswith: 'xwizard.exe'
+    filter:
+        Image|startswith: 
+        - 'C:\Windows\System32\'
+        - 'c:\windows\sysWOW32\xwizard.exe'
+    condition: selection and not filter
+falsepositives:
+    - "Windows installed on non-C drive"
+level: low

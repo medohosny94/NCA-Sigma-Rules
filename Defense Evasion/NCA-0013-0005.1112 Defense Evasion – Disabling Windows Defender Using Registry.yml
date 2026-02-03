@@ -1,0 +1,19 @@
+title: NCA -0013-0005.1112 Defense Evasion – Disabling Windows Defender Using Registry
+id: 0827a1a4-97ae-452d-bd47-4fad20d64a1e
+author: NCA
+description: This Sigma rule detects changes in Windows Defender settings related to real-time monitoring and anti-spyware features by monitoring modifications to the registry keys
+status: Stable
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 13
+    TargetObject:
+    - 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\DisableRealtimeMonitoring'
+    - 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\DisableAntiSpyware'
+    Details: DWORD (0x00000000)
+  condition: selection
+falsepositives:
+- legitimate configurations where authorized administrators & applications modify Windows Defender settings. 
+level: medium

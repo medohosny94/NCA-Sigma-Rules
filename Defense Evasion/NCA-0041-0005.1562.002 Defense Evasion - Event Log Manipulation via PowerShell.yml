@@ -1,0 +1,25 @@
+title: NCA-0041-0005.1562.002 Defense Evasion - Event Log Manipulation via PowerShell
+id: c51e9f13-c93d-4c25-b1a0-f358ba5c0033
+author: NCA
+description: Detects PowerShell activity that manipulates Windows Event Log configuration or disables event channels which may indicate attempts to cover tracks.
+status: stable
+logsource:
+    product: windows
+    service: powershell
+    category: ps_script
+detection:
+  selection1:
+    ScriptBlockText|contains:
+      - 'Remove-EventLog '
+      - 'Clear-EventLog '
+      - 'Disable-EventLog '
+  selection2:
+    ScriptBlockText|contains|all:
+      - 'Set-ItemProperty '
+      - '\CurrentVersion\WINEVT\Channels\'
+      - 'Enabled'
+      - '0'
+  condition: selection1 or selection2
+falsepositives:
+  - Legitimate uninstall or cleanup scripts removing application-specific logs.
+level: high

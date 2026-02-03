@@ -1,0 +1,25 @@
+title: NCA-0011-0005.1197 Defense Evasion  - Bitsadmin Download
+id: 913e9408-ccf7-4583-8d7d-249732485b5b
+author: NCA
+description: This rule detects any instances of bitsadmin being used to download a file.
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection1:
+        Image|endswith: bitsadmin.exe
+    susp_flag_1:
+        CommandLine|contains: /transfer
+    susp_flag_2:
+        CommandLine|contains:
+            - '/create'
+            - '/addfile'
+    http_flag:
+        CommandLine|contains: http
+    selection2:
+        CommandLine|contains: 'copy bitsadmin.exe'
+    condition: (selection1 and susp_flag_2 and http_flag) or (selection1 and susp_flag_1) or selection2
+falsepositives:
+- Some legitimate application utilize bitsadmin
+level: medium

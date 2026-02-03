@@ -1,0 +1,38 @@
+title: NCA-0040-0005.1562.002 Defense Evasion - Disabling Windows Event Log Providers (Registry)
+id: 9db7f2f5-4c71-4d8b-9a13-2e981c24f2ac
+author: NCA
+description: Detects behavior where an adversary disables Windows Event Log providers by setting Enabled=0 under the WINEVT\Channels registry path.
+status: stable
+logsource:
+    product: windows
+    category: registry_set
+detection:
+    selection:
+        TargetObject|contains: '\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\'
+        TargetObject|endswith: '\Enabled'
+        Details: 'DWORD (0x00000000)'
+    filter_wevutil:
+        Image|endswith: ':\windows\system32\wevtutil.exe'
+    filter_drvinstall:
+        Image|endswith: ':\windows\system32\drvinst.exe'
+    filter_dismhost:
+        Image|contains: ':\$WINDOWS.~BT\Work\'
+        Image|endswith: '\dismhost.exe'
+    filter_tiworker:
+        Image|contains: ':\windows\winsxs\'
+        Image|endswith: '\TiWorker.exe'
+    filter_svchost:
+        Image|endswith: ':\windows\system32\svchost.exe'
+        TargetObject|contains:
+            - '\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-FileInfoMinifilter'
+            - '\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-ASN1\'
+            - '\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Kernel-AppCompat\'
+            - '\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Runtime\Error\'
+            - '\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-CAPI2/Operational\'
+    filter_trusted_installer:
+        Image|endswith: ':\Windows\servicing\TrustedInstaller.exe'
+        TargetObject|contains: '\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Compat-Appraiser'
+    condition: selection and not 1 of filter_*
+falsepositives:
+    - System administrators intentionally disabling channels
+level: high

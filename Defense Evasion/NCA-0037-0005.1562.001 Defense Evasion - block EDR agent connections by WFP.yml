@@ -1,0 +1,100 @@
+title: NCA-0037-0005.1562.001 Defense Evasion - Block EDR agent connections by WFP
+id: b32a4255-1e8b-47ce-a2d2-8383ac13dd12
+description: Detects attempts to modify Windows Filtering Platform (WFP) filters targeting known EDR processes, excluding trusted applications and users.
+author: The Royal Commission for AlUla (RCU)
+status: stable
+date: 2025-10-13
+logsource:
+    product: windows
+    service: security
+    category: firewall
+detection:
+    selection:
+        EventCode:
+            - 5157  
+        Application_Name:
+            # Cybereason
+            - '*\AmSvc.exe'
+            - '*\CrAmTray.exe'
+            - '*\CrsSvc.exe'
+            - '*\CybereasonAV.exe'
+            - '*\ExecutionPreventionSvc.exe'
+            # Fidelis EDR
+            - '*\fidelis\endpoint\platform\endpoint.exe'
+            - '*\endpoint.exe'
+            # Carbon Black EDR
+            - '*\cb.exe'
+            # TrendMicro Apex One
+            - '*\CETASvc.exe'
+            - '*\CNTAoSMgr.exe'
+            - '*\EndpointBasecamp.exe'
+            # CrowdStrike Falcon
+            - '*\CSFalconContainer.exe'
+            - '*\CSFalconService.exe'
+            # Palo Alto Networks Traps/Cortex XDR
+            - '*\cyserver.exe'
+            - '*\CyveraService.exe'
+            - '*\CyvrFsFlt.exe'
+            - '*\Traps.exe'
+            # ESET Inspect
+            - '*\EIConnector.exe'
+            # Elastic EDR
+            - '*\elastic-agent.exe'
+            - '*\elastic-endpoint.exe'
+            - '*\filebeat.exe'
+            # FortiEDR
+            - '*\fortiedr.exe'
+            # Sophos EDR
+            - '*\hmpalert.exe'
+            - '*\mcsagent.exe'
+            - '*\mcsclient.exe'
+            # Microsoft Defender for Endpoint and Antivirus
+            - '*\MsMpEng.exe'
+            - '*\MsSense.exe'
+            - '*\SenseIR.exe'
+            - '*\SenseNdr.exe'
+            - '*\SenseCncProxy.exe'
+            - '*\SenseSampleUploader.exe'
+            # Elastic Stack
+            - '*\winlogbeat.exe'
+            # FireEye Endpoint Agent
+            - '*\xagt.exe'
+            # Qualys Cloud Agent
+            - '*\QualysAgent.exe'
+            # SentinelOne
+            - '*\SentinelAgent.exe'
+            - '*\SentinelAgentWorker.exe'
+            - '*\SentinelServiceHost.exe'
+            - '*\SentinelStaticEngine.exe'
+            - '*\SentinelStaticEngineScanner.exe'
+            - '*\SentinelHelperService.exe'
+            - '*\SentinelBrowserNativeHost.exe'
+            - '*\LogProcessorService.exe'
+            # Ivanti Endpoint Manager
+            - '*\RepMgr.exe'
+            - '*\RepUtils.exe'
+            - '*\RepUx.exe'
+            - '*\RepWAV.exe'
+            - '*\RepWSC.exe'
+            # Tanium
+            - '*\TaniumClient.exe'
+            - '*\TaniumCX.exe'
+            - '*\TaniumDetectEngine.exe'
+            # Microsoft System Tools
+            - '*\sfc.exe'
+            # ESET Endpoint Antivirus
+            - '*\ekrn.exe'
+            # Ivanti Workspace Communication
+            - '*\WSCommunicator.exe'
+            # TrendMicro
+            - '*\TmListen.exe'
+            - '*\Ntrtscan.exe'
+            - '*\TmWSCSvc.exe'
+            - '*\PccNTMon.exe'
+            - '*\TMBMSRV.exe'
+            - '*\TmCCSF.exe'
+    condition: selection
+falsepositives:
+    - Legitimate network configuration changes
+    - Authorized security software updates
+level: high

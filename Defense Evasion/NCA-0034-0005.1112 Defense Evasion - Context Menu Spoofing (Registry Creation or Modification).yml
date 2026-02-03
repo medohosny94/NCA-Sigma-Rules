@@ -1,0 +1,23 @@
+title: NCA-0034-0005.1112 Defense Evasion - Context Menu Spoofing (Registry Creation or Modification)
+id: 8cfba190-3353-47d6-b704-c08ae655b00b
+author: NCA
+description: Detects the creation or modification under the "shell" registry key, which is associated with the context menu. Adversaries may exploit the inherent trust users place in these familiar options as it provides a convenient way to access common commands or actions. Note that to detect the registry modification, the following paths "command" and "\*\shell\" must be included in Sysmon configuration file, please refer back to NCA guidelines for windows and sysmon auditing.
+status: stable
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 
+    - 12
+    - 13
+    Image|endswith: reg.exe
+  selection1:
+    TargetObject|endswith: 'command'
+  selection2:
+    TargetObject|contains: '\*\shell\'
+  condition: selection AND (selection1 OR selection2)
+falsepositives:
+    - Legitimate keys creation for operational tasks or applications requiring changes to context menu options
+level: medium
+

@@ -1,0 +1,21 @@
+title: NCA-0005-0005.1218.010 Defense Evasion - Signed Binary Proxy Execution
+id: 1fbd52ea-6854-4913-bc92-3187784dfde3
+author: NCA
+description: Monitor the regsvr32 binary for detecting a signed binary proxy execution attack.
+status: stable
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 1
+    Image|endswith: 'regsvr32.exe'
+    CommandLine|contains: 
+      - '.sct'
+      - 'http'
+      - 'https'
+  condition:
+  - selection
+falsepositives:
+- "Communicating with official Microsoft IPs/domains for updates"
+level: high

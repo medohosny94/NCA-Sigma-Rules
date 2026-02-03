@@ -1,0 +1,18 @@
+title: NCA-0009-0005.1127.001 Defense Evasion - InstallUtil MSBuild AppWhitelisting Bypass
+id: ed64b2a6-ba9d-49f6-ae87-ffdfebfdea69
+description: Detects execution of installutil or msbuild, which can be used to bypass Applocker whitelisting
+status: stable
+author: NCA
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        CommandLine|contains:
+            - 'installutil.exe'
+            - 'msbuild.exe'
+    condition: selection
+falsepositives:
+- "Scripts and administrative tools used in the monitored environment"
+- "Using installutil to add features for .NET applications"
+level: low

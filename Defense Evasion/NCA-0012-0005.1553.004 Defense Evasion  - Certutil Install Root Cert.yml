@@ -1,0 +1,23 @@
+title: NCA-0012-0005.1553.004 Defense Evasion  - Certutil Install Root Cert
+id: 9382522d-d542-4231-9410-6888a9fe29f6
+author: NCA
+description: Malicous actors may install a root certificate on a compromised system to avoid warnings when connecting to their malicous web servers.
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection1:
+        Image|endswith: 'certutil.exe'
+        CommandLine|contains|all:
+            - '-addstore'
+            - 'root'
+    selection2:
+        Image|endswith: 'CertMgr.exe'
+        CommandLine|contains|all:
+            - '/add'
+            - 'root'
+    condition: selection1 or selection2
+falsepositives:
+- "Admin/IT may add a Root CA."
+level: medium

@@ -1,0 +1,18 @@
+title: NCA-0006-0005.1218.010 Defense Evasion - Regsvr32 or Rundll32 DNS Query
+id: c4b3b470-d66d-4e14-9c8e-8d94aad76def
+author: NCA
+description: Detect DNS queries initiated by Regsvr32.exe or Rundll32.
+status: experimental
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        Image|endswith:
+            - 'regsvr32.exe'
+            - 'rundll32.exe'
+        EventID: 22
+    condition: selection
+falsepositives:
+- Unknown
+level: high

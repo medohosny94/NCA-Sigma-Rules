@@ -1,0 +1,20 @@
+title: NCA-0031-0005.1218 Defense Evasion - MsiExec and Regsvr32 Web Install
+id: 3fb76085-2867-4359-a4fe-56a55b39ae45
+author: NCA
+description: This rule is designed to identify msiexec and regsvr32 processes making web requests.
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        EventID: '1'
+        Image|endswith: 
+        - msiexec.exe
+        - regsvr32.exe
+        CommandLine|contains: 'http'
+    condition: selection
+falsepositives:
+- False positives depend on scripts and administrative tools used in the monitored environment
+level: low
+

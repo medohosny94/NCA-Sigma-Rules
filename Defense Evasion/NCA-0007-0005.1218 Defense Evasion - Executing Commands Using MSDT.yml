@@ -1,0 +1,20 @@
+title: NCA-0007-0005.1218 Defense Evasion - Executing Commands Using MSDT
+id: f7ec2f0f-2530-42fb-97be-ee773e34e4af
+author: NCA
+description: Detecting the execution of weaponized malicious documents (maldocs) or embedded links, that uses ms-msdt scheme to execute code.
+status: experimental
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection1:
+        EventID: 1
+        Image|endswith: msdt.exe
+    selection2:
+        CommandLine|contains:
+            - 'IT_BrowseForFile'
+            - 'IT_RebrowseForFile'
+    condition: selection1 AND selection2
+falsepositives:
+- Unknown
+level: high

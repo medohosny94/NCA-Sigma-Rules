@@ -1,0 +1,21 @@
+title: NCA-0023-0005.1562.001 Defense Evasion - Tamper Windows Defender Configuration Using Remove-MpPreference
+id: b72f6347-3ff2-4e4f-b7b1-bd3fd0a360fd
+author: NCA
+description: Detects attempts to tamper with Windows Defender configuration using the 'MpPreference' cmdlet
+status: stable
+logsource:
+    product: windows
+    service: powershell
+detection:
+    selection1:
+        ScriptBlockText|contains: 'Remove-MpPreference'
+    selection2:
+        ScriptBlockText|contains:
+            - '-ControlledFolderAccessProtectedFolders '
+            - '-AttackSurfaceReductionRules_Ids '
+            - '-AttackSurfaceReductionRules_Actions '
+            - '-CheckForSignaturesBeforeRunningScan '
+    condition: selection1 and selection2
+falsepositives:
+    - Legitimate PowerShell scripts
+level: medium

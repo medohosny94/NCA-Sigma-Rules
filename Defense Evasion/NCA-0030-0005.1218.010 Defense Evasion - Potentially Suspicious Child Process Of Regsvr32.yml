@@ -1,0 +1,35 @@
+title: NCA-0030-0005.1218.010 Defense Evasion - Potentially Suspicious Child Process Of Regsvr32
+id: dec92332-1299-44e7-b776-13689554b1d0
+author: NCA
+description: This rule aims to identify potentially suspicious activity involving the regsvr32.exe process as the parent process, spawning child processes that are commonly associated with various forms of cyber threats. 
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        ParentImage|endswith: 'regsvr32.exe'
+        Image|endswith:
+            - 'calc.exe'
+            - 'cscript.exe'
+            - 'explorer.exe'
+            - 'mshta.exe'
+            - 'net.exe'
+            - 'net1.exe'
+            - 'nltest.exe'
+            - 'notepad.exe'
+            - 'powershell.exe'
+            - 'pwsh.exe'
+            - 'reg.exe'
+            - 'schtasks.exe'
+            - 'werfault.exe'
+            - 'wscript.exe'
+    filter_werfault:
+        Image|endswith: 'werfault.exe'
+        CommandLine|contains|all:
+            - '-u'
+            - '-p'
+    condition: selection and not filter_werfault
+falsepositives:
+- Unlikely, but can rarely occur. 
+level: medium

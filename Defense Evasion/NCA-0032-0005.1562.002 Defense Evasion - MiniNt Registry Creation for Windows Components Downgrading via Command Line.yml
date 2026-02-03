@@ -1,0 +1,19 @@
+title: NCA-0032-0005.1562.002 Defense Evasion - MiniNt Registry Creation for Windows Components Downgrading via Command Line
+id: 36729b01-96e7-49d5-a535-6318b7334e5e
+author: NCA
+description: Detects the creation or modification of the "MiniNt" registry key via command line operations, which is associated with the downgrading of Windows components. Adversaries may use this technique to evade defenses by disabling or altering security features.
+status: experimental
+date: 2025/02/02
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 1
+    Image|endswith: reg.exe
+    CommandLine|contains: 'Control\MiniNt'
+  condition: selection
+falsepositives:
+    - Legitimate admin activities that requires system downgrading.
+level: medium
+

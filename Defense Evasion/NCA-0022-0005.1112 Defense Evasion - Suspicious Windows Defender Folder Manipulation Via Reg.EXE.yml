@@ -1,0 +1,24 @@
+title: NCA-0022-0005.1112 Defense Evasion - Suspicious Windows Defender Folder Manipulation Via Reg.EXE
+id: 18037902-63a1-4a0e-88ad-742c315641c2
+author: NCA
+description: Detects the usage of "reg.exe" to manipulate Defender folder. Adversaries have been seen using this technique within AppData and ProgramData.
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        EventID: 1
+        Image|endswith: '\reg.exe'
+        CommandLine|contains|all:
+            - 'SOFTWARE\Microsoft\Windows Defender\'
+            - 'add'
+            - '/t '
+            - 'REG_DWORD '
+            - '/v '
+            - '/d '
+            - '0'
+    condition: selection
+falsepositives:
+    - Legitimate use
+level: medium

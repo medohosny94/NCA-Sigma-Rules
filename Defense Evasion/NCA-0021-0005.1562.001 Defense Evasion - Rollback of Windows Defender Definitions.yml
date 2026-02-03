@@ -1,0 +1,19 @@
+title: NCA-0021-0005.1562.001 Defense Evasion - Rollback of Windows Defender Definitions
+id: 8e57f253-c65b-4034-b26f-cd576035ab80
+author: NCA
+description: Adversaries may rollback Windows Defender definitions to avoid possible detection of their tools and activities by removing Windows Defender definition files
+status: stable
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+    selection:
+        EventID: 1
+        Image|endswith: 'MpCmdRun.exe'
+        CommandLine|contains:
+            - '-RemoveDefinitions'
+    condition: selection
+falsepositives:
+    - Unknown
+level: medium
+

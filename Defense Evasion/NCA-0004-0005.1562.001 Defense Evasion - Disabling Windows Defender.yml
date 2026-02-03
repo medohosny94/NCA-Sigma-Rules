@@ -1,0 +1,28 @@
+title: NCA-0004-0005.1562.001 Defense Evasion - Disabling Windows Defender
+id: 4434166f-ea0b-4e0e-a535-75dbda00e2e1
+author: NCA
+description: Detect signs of disabling Windows Defender components.
+status: stable
+logsource:
+  product: windows
+detection:
+  selection1:
+    EventID: 4104
+    Message|contains:
+    - "DisableRealtimeMonitoring" 
+    - "DisableIntrusionPreventionSystem" 
+    - "DisableIOAVProtection" 
+    - "DisableScriptScanning" 
+    - "EnableControlledFolderAccess" 
+    - "DisableAtFirstSeen" 
+    - "DisablePrivacyMode" 
+    - "SignitureDisableUpdateOnStartupWithoutEngine" 
+    - "DisableArchiveScanning" 
+    - "DisableBehaviorMonitoring"
+    - "DisableBlockAtFirstSeen" 
+  selection2:
+    Message|contains: $true
+  condition: selection1 and selection2
+falsepositives:
+- "Lagitimate Admin activities"
+level: high

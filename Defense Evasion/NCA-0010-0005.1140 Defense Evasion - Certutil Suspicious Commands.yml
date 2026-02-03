@@ -1,0 +1,30 @@
+title: NCA-0010-0005.1140 Defense Evasion - Certutil Suspicious Commands
+id: d63ab86d-1c2b-4efb-82a2-3ccace26e1dd
+author: NCA
+description: This rule identifies any suspicious execution of the Microsoft certutil tool
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    parameters:
+        CommandLine|contains:
+            - '-decode'
+            - '-decodehex'
+            - '-urlcache'
+            - '-verifyctl'
+            - '-encode'
+            - 'decode'
+            - 'decodehex'
+            - 'urlcache'
+            - 'verifyctl'
+            - 'encode'
+    certutil:
+        Image|endswith: certutil.exe
+        CommandLine|contains:
+            - 'URL'
+            - 'ping'
+    condition: parameters or certutil
+falsepositives:
+- "Presence of scripts and administrative tools utilized within the monitored environment"
+level: high

@@ -1,0 +1,17 @@
+title: NCA-0026-0005.1218.011 Defense Evasion - Rundll32 Application Bypass with DllRegisterServer Function
+id: 4ac36651-1184-4340-95bf-93efe25a39e9
+author: NCA
+description: This rule focuses on identifying potential application bypass techniques involving the use of DllRegisterServer export function. 
+status: stable
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 1
+    Image|endswith: 'rundll32.exe'
+    CommandLine|contains: 'DllRegisterServer'
+  condition: selection
+falsepositives:
+- Legitimate software or processes execute rundll32.exe with the specified command line containing 'DllRegisterServer'.
+level: low

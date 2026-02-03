@@ -1,0 +1,28 @@
+title: NCA-0014-0005.1112 Defense Evasion - Modify Registry
+id: e482569d-96c5-4427-8884-d85ee9e97f01
+author: NCA
+description: Attackers modifies low risk file types registry value to include high risk extensions to avoid warnings and prompts. 
+status: experimental
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection1:
+    EventID: 1
+    Image|endswith:
+    - 'reg.exe'
+  selection2:
+    CommandLine|contains: 
+    - '.exe'
+    - '.bat'
+    - '.cmd'
+    - '.reg'
+    - '.cpl'
+  selection3:
+    CommandLine|contains:
+    - 'lowriskfiletypes'
+  condition: selection1 AND selection2 AND selection3
+falsepositives:
+- Unknown
+level: high
+

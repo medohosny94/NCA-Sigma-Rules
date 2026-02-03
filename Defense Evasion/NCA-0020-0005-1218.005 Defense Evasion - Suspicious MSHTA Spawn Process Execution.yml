@@ -1,0 +1,27 @@
+title: NCA-0020-0005-1218.005 Defense Evasion - Suspicious MSHTA spawn process execution
+id: e80a946a-81e4-4678-99e3-a7566669fb82
+author: NCA
+description: Detects the usage of spawned suspicious processes mshta.exe.
+status: stable
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+        Image|endswith: mshta.exe
+        ParentImage|endswith:
+            - 'cmd.exe'
+            - 'powershell.exe'
+            - 'winword.exe'
+            - 'excel.exe'
+            - 'powerpnt.exe'
+            - 'wscript.exe'
+            - 'cscript.exe'
+            - 'reg.exe'
+            - 'regsvr32.exe'
+            - 'BITSADMIN*'
+            - 'explorer.exe'
+  condition: selection
+falsepositives:
+- legitimate adminstrative usage of mshta.
+level: high

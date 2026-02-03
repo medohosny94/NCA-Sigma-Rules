@@ -1,0 +1,25 @@
+title: NCA-0028-0005.1218.011 Defense Evasion - Suspicious Rundll32 Script in CommandLine
+id: 62a1ae84-176e-49eb-ac29-f914aa4951a2
+author: NCA
+description: This rule is designed to identify potential instances of defense evasion involving the rundll32 process, specifically focusing on suspicious command lines that may indicate the use of malicious scripts. The rule monitors Windows Sysmon logs to detect activities that could leverage the "mshtml.dll" RunHTMLApplication export function to execute arbitrary code via various protocol handlers (such as vbscript, javascript, file, http, etc.).
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection1:
+        EventID: 1
+    selection2:
+        CommandLine|contains: 'rundll32'
+    selection3:
+        CommandLine|contains: 
+            - 'mshtml,RunHTMLApplication'
+            - 'mshtml,#135'
+    selection4:
+        CommandLine|contains:
+            - 'javascript:'
+            - 'vbscript:'
+    condition: all of selection*
+falsepositives:
+- False positives depend on scripts and administrative tools used in the monitored environment
+level: medium

@@ -1,0 +1,16 @@
+title: NCA-0019-0005.1055.001 Defense Evasion - Suspicious Windows Update Agent
+id: 90218638-96e3-40f2-b742-256811975d2b
+author: NCA
+description: Detects suspicious activity related to the Windows Update Agent by monitoring the command line of the "wuauclt.exe" process. It specifically looks for instances where the "wuauclt.exe" command line does not contain any command line flags, which can indicate potentially malicious behavior  to identify activities associated with the BlackByte ransomware.
+status: experimental
+logsource:
+        product: windows
+        service: Sysmon
+detection:
+    selection:
+        Image|endswith: 'Wuauclt.exe'
+        CommandLine|endswith: 'Wuauclt.exe' 
+    condition: selection
+falsepositives:
+- Unknown
+level: high

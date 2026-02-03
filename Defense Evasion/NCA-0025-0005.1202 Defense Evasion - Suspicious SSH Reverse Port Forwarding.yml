@@ -1,0 +1,20 @@
+title: NCA-0025-0005.1202 Defense Evasion - Suspicious SSH Reverse Port Forwarding
+id: e3fbf314-1f22-40dc-957c-28e001ab160b
+author: NCA
+description: This detection rule identifies instances of the SSH command invoking reverse port forwarding with the parameter "-R".
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        EventID: 1
+        Image|endswith: ssh.exe
+        ParentImage|endswith: explorer.exe
+        CommandLine|contains: 
+         - "-R"
+         - StrictHostKeyChecking
+    condition: selection
+falsepositives:
+    - Legitimate administrative or development activities where SSH is used for authorized purposes, such as system administration, remote server management, or file transfer operations.
+level: high

@@ -1,0 +1,27 @@
+title: NCA-0027-0005.1218.011 Defense Evasion - Rundll32 with Suspicious Process Lineage
+id: 878aa951-de2e-42da-bbdd-1dcabf66e21f
+author: NCA
+description: This rule focuses on identifying potentially malicious activity involving the execution of the rundll32.exe process. It specifically targets instances where rundll32.exe is launched from unusual parent processes that might indicate suspicious behavior.
+status: experimental
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    Image|endswith: 'rundll32.exe'
+    ParentImage|endswith:
+    - 'winword.exe'
+    - 'excel.exe'
+    - 'msaccess.exe'
+    - 'lsass.exe'
+    - 'taskeng.exe'
+    - 'winlogon.exe'
+    - 'schtask.exe'
+    - 'regsvr32.exe'
+    - 'wmiprvse.exe' 
+    - 'wsmprovhost.exe'
+  condition: selection
+falsepositives:
+- Unknown
+level: medium
+

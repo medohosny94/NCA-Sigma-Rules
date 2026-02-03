@@ -1,0 +1,37 @@
+title: NCA-0029-0005.1218.010 Defense Evasion - Regsvr32 DLL Execution With Suspicious File Extension
+id: 26662d37-9c10-4601-942f-4884602c02a4
+author: NCA
+description: This rule focuses on identifying potential instances of defense evasion where the Regsvr32.exe executable is used to execute DLL files that are masquerading as other common file types. 
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        Image|endswith: 'regsvr32.exe'
+        EventID: 1
+        CommandLine|endswith:
+            - '.bin'
+            - '.bmp'
+            - '.cr2'
+            - '.dat'
+            - '.eps'
+            - '.gif'
+            - '.ico'
+            - '.jpeg'
+            - '.jpg'
+            - '.nef'
+            - '.orf'
+            - '.png'
+            - '.raw'
+            - '.sr2'
+            - '.temp'
+            - '.tif'
+            - '.tiff'
+            - '.tmp'
+            - '.rtf'
+            - '.txt'
+    condition: selection
+falsepositives:
+- Legitimate uses of Regsvr32.exe with file types.
+level: medium

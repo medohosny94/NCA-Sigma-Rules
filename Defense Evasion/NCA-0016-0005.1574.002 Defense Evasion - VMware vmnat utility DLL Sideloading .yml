@@ -1,0 +1,20 @@
+title: NCA-0016-0005.1574.002 Defense Evasion - VMware vmnat utility DLL Sideloading
+id: c724a3e2-8cb5-4e8f-91b0-ef398e0febc4
+author: NCA
+description: Detect the execution of the VMware vmnat utility from a non-default directory, which may indicate an attempt to sideload arbitrary DLLs. The rule focuses on Windows systems and does not rely on a specific log source.
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        Image|endswith: 'vmnat.exe'
+    filter: 
+        Image|startswith: 
+        - 'C:\Program Files\VMware\'
+        - 'C:\Program Files (x86)\VMware'
+        - 'C:\Windows\Syswow64\'
+    condition: selection and not filter
+falsepositives:
+- "Vmware installed in non-standard folder"
+level: low

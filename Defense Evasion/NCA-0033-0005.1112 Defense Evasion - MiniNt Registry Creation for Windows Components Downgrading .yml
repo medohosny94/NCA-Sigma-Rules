@@ -1,0 +1,21 @@
+title: NCA-0033-0005.1112 Defense Evasion - MiniNt Registry Creation for Windows Components Downgrading 
+id: 108bced5-4d67-412b-869a-365efbdf7b64
+author: NCA
+description: Detects the creation or modification of the "MiniNt" registry key, which is commonly associated with the downgrading of Windows components. Adversaries may use this technique as part of a defense evasion strategy to disable or downgrade security features. Note that to detect the registry modification, the following path "Control\MiniNt" must be included in Sysmon configuration file, please refer back to NCA guidelines for Windows and Sysmon auditing. 
+status: stable
+date: 2025/02/02
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 
+    - 12
+    - 13
+    Image|endswith: reg.exe
+    TargetObject|endswith: 'Control\MiniNt'
+  condition: selection 
+falsepositives:
+    - Legitimate admin activities that requires system downgrading.
+level: high
+

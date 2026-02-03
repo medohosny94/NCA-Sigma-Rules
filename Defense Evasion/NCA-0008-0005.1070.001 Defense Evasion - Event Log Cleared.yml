@@ -1,0 +1,15 @@
+title: NCA-0008-0005.1070.001 Defense Evasion - Event Log Cleared
+id: 4c26d5ae-fe50-4a11-92cc-b9be370f0628
+author: NCA
+description: Detects when an attacker clears out event logs
+status: stable
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 1102
+  condition: selection
+falsepositives:
+- Legitimate deletion by System Administrators
+level: high

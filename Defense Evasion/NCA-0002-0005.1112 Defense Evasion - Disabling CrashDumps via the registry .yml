@@ -1,0 +1,17 @@
+title: NCA-0002-0005.1112 Defense Evasion - Disabling CrashDumps via the registry 
+id: 7986e2e7-c3bf-48e0-ae86-5ca16ae94f37
+author: NCA
+description: This Sigma rule focuses on detecting activities related to disabling crash dumps via registry modifications. Disabling crash dumps is a behavior commonly associated with Hermetic Wiper, a type of destructive malware. 
+status: stable
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventType: SetValue
+    TargetObject|endswith: CrashControl\CrashDumpEnabled
+    Details: DWORD (0x00000000)
+  condition: selection
+falsepositives:
+- Legitimate disabling of crashdumps
+level: medium

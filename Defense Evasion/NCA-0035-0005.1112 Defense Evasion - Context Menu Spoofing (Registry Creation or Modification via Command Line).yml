@@ -1,0 +1,21 @@
+title: Defense Evasion - Context Menu Spoofing (Registry Creation or Modification via Command Line)
+id: 64e5f5d9-28e5-4ec4-a4f0-c6bbfbd3651e
+author: NCA
+description: Detects the creation or modification under "shell" registry key via command line operations, which is associated with the context menu. Adversaries may exploit the inherent trust users place in these familiar options as it provides a convenient way to access common commands or actions. 
+status: stable
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 1
+    Image|endswith: reg.exe
+    CommandLine|contains: 
+     - 'SOFTWARE\Classes\*\shell\'
+     - 'Directory\background\shell\'
+     - '\*\shell\'
+  condition: selection
+falsepositives:
+    - Legitimate keys creation for operational tasks
+level: medium
+

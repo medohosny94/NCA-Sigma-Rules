@@ -1,0 +1,22 @@
+title: NCA-0017-0005.1574.002 Defense Evasion - Svchost DLL Search Order Hijack
+id: 314d50ad-1cf1-4c51-a577-69272260fe0b 
+author: NCA
+description: Detect DLL sideloading attacks where DLLs are loaded by the Service Control Manager (SCM) for specific services such as IKE, IKEEXT, and SessionEnv. DLL sideloading can be exploited by an attacker to execute their malicious code within the PROCESS_ATTACH block of their library and then restart the targeted services, specifically "svchost.exe -k netsvcs," to achieve code execution on a remote machine. The rule focuses on Windows systems and relies on image load events for monitoring.
+status: experiment
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        EventID: 7
+        Image|endswith: '\svchost.exe'
+        ImageLoaded|endswith:
+            - 'tsmsisrv.dll'
+            - 'tsvipsrv.dll'
+            - 'wlbsctrl.dll'
+    filter:
+        ImageLoaded|startswith: 'C:\Windows\WinSxS\'
+    condition: selection and not filter
+falsepositives:
+- Unknown
+level: medium

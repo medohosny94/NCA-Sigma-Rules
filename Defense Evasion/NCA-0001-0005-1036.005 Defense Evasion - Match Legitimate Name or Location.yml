@@ -1,0 +1,23 @@
+title: NCA-0001-0005-1036.005 Defense Evasion - Match Legitimate Name or Location
+id: 7bd6cc98-06ab-411c-8b4d-2aff29bd5ed9
+author: NCA
+description: This Sigma rule focuses on monitoring process executions of 'cmd.exe', 'powershell.exe', and 'svchost.exe' on Windows systems. The rule aims to detect instances where these processes are executed from locations other than their legitimate paths.
+status: expermintal
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    EventID: 1
+    Image|endswith:
+    - 'cmd.exe'
+    - 'powershell.exe'
+    - 'svchost.exe'
+  filter:
+    Image|startswith:
+    - 'C:\windows\system32\'
+    - 'C:\windows\syswow64\'
+  condition: selection and not filter
+falsepositives:
+- unknown
+level: high

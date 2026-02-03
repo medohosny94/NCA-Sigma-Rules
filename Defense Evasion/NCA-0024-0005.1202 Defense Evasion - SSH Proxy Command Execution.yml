@@ -1,0 +1,22 @@
+title: NCA-0024-0005.1202 Defense Evasion - SSH Proxy Command Execution
+id: 65ea3cb5-f3ca-4c44-ba19-83a500db4fed
+author: frack113, Nasreddine Bencherchali
+description: This detection rule aims to identify instances where the "ssh.exe" binary is leveraged as a proxy to execute commands. 
+status: stable
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection1:
+        EventID: 1
+        Image|endswith: 'ssh.exe'
+    selection2:
+        - CommandLine|contains: 'ProxyCommand='
+    selection3:
+        - CommandLine|contains|all:
+            - 'PermitLocalCommand'
+            - 'LocalCommand'
+    condition: selection1 and (selection2 or selection3)
+falsepositives:
+    - Legitimate administrative or development activities where SSH is used for authorized purposes, such as system administration, remote server management, or file transfer operations.
+level: medium

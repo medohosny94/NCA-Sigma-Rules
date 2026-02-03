@@ -1,0 +1,19 @@
+title: NCA-0018-0005.1574.002 Defense Evasion -  DeviceEnroller DLL Sideloading
+id: d460eb28-de83-4641-b2c9-6ec592b2d02a
+author: NCA
+description: Detect the potential sideloading of a non-existent DLL file named "ShellChromeAPI.dll" using the PhoneDeepLink parameter. Adversaries may attempt to drop their own renamed DLL file and execute it through the DeviceEnroller.exe process using this parameter. 
+status: experimental
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection_img:
+        - EventID: 1
+        - Image|endswith: 'deviceenroller.exe'
+        - OriginalFileName: 'deviceenroller.exe'
+    selection_cli:
+        CommandLine|contains: '/PhoneDeepLink'
+    condition: all of selection_*
+falsepositives:
+- Unknown
+level: medium
