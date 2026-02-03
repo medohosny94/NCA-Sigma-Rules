@@ -1,0 +1,19 @@
+title: NCA-0003-0007.1012 Discovery - Defender Exclusion
+id: 7e9b9e44-8a01-4c6e-a80f-329c3fbb78de
+author: NCA
+description: Detect instances where the 'reg' command is used to query exclusions in Windows Defender.
+status: experimental
+logsource:
+    product: windows
+    service: Sysmon
+detection:
+    selection:
+        EventID: 1
+        Image|endswith: reg.exe
+        CommandLine|contains|all:
+            - 'defender\exclusions'
+    condition: selection
+falsepositives:
+- Unknown
+level: low
+

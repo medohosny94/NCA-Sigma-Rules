@@ -1,0 +1,17 @@
+title: NCA-0001-0007.1135 Discovery - SMBMap
+id: 3ceb8823-7763-4aba-b6bb-9dca435fe9a9
+author: NCA
+description: This Sigma rule aims to detect the presence of the SMBMap script in your environment. SMBMap is a tool commonly used for discovering and enumerating information from SMB shares.
+status: stable
+logsource:
+  product: windows
+  service: Sysmon
+detection:
+  selection:
+    event_id: 3
+    DestinationPort: 445
+    Image|contains: python
+  condition: selection
+falsepositives:
+- Legitimate python scripts using SMB  will be triggered
+level: low
